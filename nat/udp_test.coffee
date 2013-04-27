@@ -39,6 +39,8 @@ class udp_test
 			#log msg, rinfo
 			log @decode_msg(msg)
 			@socket.send msg, 0, 4, @port, @host if (@count += 1) < 10
+			msg.copy @buffer, 0, 0, 4
+			@socket.send @buffer, 0, 4, @port, @host if (@count += 1) < 10
 
 		@socket.on 'error', (msg) ->
 			log "UDP错误", msg
