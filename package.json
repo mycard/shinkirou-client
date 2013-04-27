@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "coffee app.coffee"
+    "start": "coffee client.coffee"
   },
   "dependencies": {
-    "coffee-script": "*"
+    "coffee-script": "*",
+    "underscore": "*"
   }
 }
