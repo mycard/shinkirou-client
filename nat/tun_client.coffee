@@ -82,10 +82,12 @@ class tun_client extends EventEmitter
 		log "Nya!", rinfo
 
 		clearTimeout @watch_timer
+		@socket.removeAllListeners 'message'
+				
 		@RHost = rinfo.address
 		@RPort = rinfo.port
 
-		log msg, rinfo
+		#log msg, rinfo
 
 		# 开始绑定本地端口准备通信
 		@client = udp.createSocket "udp4"
