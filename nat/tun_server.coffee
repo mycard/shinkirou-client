@@ -37,8 +37,6 @@ class tun_server
 
 			key = msg.readUInt32LE 0
 
-			log "Key:#{key}", rinfo
-			
 			switch msg.length
 				when 10
 					# 1.客户端发送自身Key和IP给Server，Server返回公网IP和Port给客户端，并记录该客户端
@@ -46,6 +44,8 @@ class tun_server
 					# 服务端应答包(16char) [4char Key][4char IP][2char Port][4char Public IP][2char Public port]
 					buf = new Buffer 16
 					key = @nextKey() if key == 0
+
+					log "Key:#{key}, #{rinfo.address}:#{rinfo.port}"
 
 					msg.copy buf, 0
 					buf.writeUInt32LE key, 0

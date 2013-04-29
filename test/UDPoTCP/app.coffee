@@ -105,6 +105,7 @@ class server_TCP2UDP
 
         				# 读取端口，准备发送
         				port = @socket.read_buffer.readUInt16BE 2
+        				#port += 1
 
         				#log "源：#{port}, 长：#{len}"
 
