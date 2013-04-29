@@ -14,16 +14,25 @@ class udp_proxy
 		@mport ?= 2333
 		@mhost ?= 'localhost'
 
+	first_packet: (msg, rinfo)=>
+		@mhost = rinfo.address
+		@mport = rinfo.port
+		@socket.removeAllListeners 'message'
+		@socket.on 'message', @redirect_packet
+
+		@client.send msg, 0, msg.length, @port, @host
+
+		log @mhost, @mport
+
+	redirect_packet: (msg, rinfo)=>
+		@client.send msg, 0, msg.length, @port, @host if rinfo.port == @mport
+		#@socket.send msg, 0, msg.length, @mport, @mhost
+
 	run: ->
 		@socket = udp.createSocket 'udp4'
 		@client = udp.createSocket 'udp4'
 
-		@socket.on "message", (msg, rinfo) =>
-			@client.send msg, 0, msg.length, @port, @host
-			if @mhost == 'localhost'
-				@mhost = rinfo.address
-				@mport = rinfo.port
-				log rinfo
+		@socket.on "message", @first_packet
 
 		@client.on "message", (msg, rinfo) =>
 			@socket.send msg, 0, msg.length, @mport, @mhost		
