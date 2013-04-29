@@ -8,7 +8,7 @@ class tun_server
 
 		@host ?= '0.0.0.0'			# 默认监听所有IP地址
 		@port ?= 5000				# 默认监听5000端口
-		@clearInterval ?= 5000 	# 默认 5分钟 清理一次
+		@clearInterval ?= 300000 	# 默认 5分钟 清理一次
 		@clearCount ?= 5000 		# 默认收到 5K 请求后清理一次
 
 		@client_list = {}			# 保存默认映射表
