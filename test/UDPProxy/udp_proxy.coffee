@@ -20,10 +20,12 @@ class udp_proxy
 
 		@socket.on "message", (msg, rinfo) =>
 			@client.send msg, 0, msg.length, @port, @host
-			@mhost = rinfo.address
-			@mport = rinfo.port
+			if @mhost == 'localhost'
+				@mhost = rinfo.address
+				@mport = rinfo.port
+				log rinfo
 
-		@client.on "message", (msg) =>
+		@client.on "message", (msg, rinfo) =>
 			@socket.send msg, 0, msg.length, @mport, @mhost		
 
 		@socket.on 'error', (msg) ->
@@ -50,6 +52,5 @@ module.exports = udp_proxy
 module.exports.run = run
 
 if argv.length >= 5
-	log argv
 	run argv[2], (parseInt argv[3]), (parseInt argv[4])
 
