@@ -59,7 +59,7 @@ class tun_client extends EventEmitter
 
 		@nya_buf = new Buffer 4
 		#@nya_buf.write 'nya', 0, 3
-		@nya_buf.writeUInt32LE @Key, 0
+		@nya_buf.writeUInt32LE @RKey, 0
 
 		@RHost = @Remote_Map.remote.ip
 		@RPort = @Remote_Map.remote.port
