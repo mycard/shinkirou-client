@@ -29,8 +29,8 @@ class udp_proxy
 			@client_len += msg.length
 			@client_count += 1
 
-		@client.resume()
-		@socket.resume()
+		#@client.resume()
+		#@socket.resume()
 
 		#@client.send msg, 0, msg.length, @port, @host
 
