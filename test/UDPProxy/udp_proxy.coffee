@@ -14,18 +14,34 @@ class udp_proxy
 		@mport ?= 2333
 		@mhost ?= 'localhost'
 
+		@client_count = @client_len = 0
+		@socket_count = @socket_len = 0
+
 	first_packet: (msg, rinfo)=>
 		@mhost = rinfo.address
 		@mport = rinfo.port
+		
 		@socket.removeAllListeners 'message'
+		
 		@socket.on 'message', @redirect_packet
+		@client.on "message", (msg, rinfo) =>
+			@socket.send msg, 0, msg.length, @mport, @mhost
 
-		@client.send msg, 0, msg.length, @port, @host
+		@client.resume()
+		@socket.resume()
+
+		#@client.send msg, 0, msg.length, @port, @host
 
 		log @mhost, @mport
+		setInterval =>
+			log "C:#{@client_len}/#{@client_count} \t\t S:#{@socket_len}/#{@socket_count}"
+			@client_count = @client_len = 0
+			@socket_count = @socket_len = 0
+		, 1000
 
 	redirect_packet: (msg, rinfo)=>
-		@client.send msg, 0, msg.length, @port, @host if rinfo.port == @mport
+		@client.send msg, 0, msg.length, @port, @host #if rinfo.port == @mport
+
 		#@socket.send msg, 0, msg.length, @mport, @mhost
 
 	run: ->
@@ -33,9 +49,6 @@ class udp_proxy
 		@client = udp.createSocket 'udp4'
 
 		@socket.on "message", @first_packet
-
-		@client.on "message", (msg, rinfo) =>
-			@socket.send msg, 0, msg.length, @mport, @mhost		
 
 		@socket.on 'error', (msg) ->
 			log "监听UDP错误", msg
@@ -46,8 +59,8 @@ class udp_proxy
 		@socket.bind @bind, @local, =>
 			log "服务启动成功：#{@local}:#{@bind}"
 
-		@client.bind @bind + 1, @local, =>
-			log "连接启动成功：#{@local}:#{@bind + 1}"
+		@client.bind @bind + 1, '0.0.0.0', =>
+			log "连接启动成功：0.0.0.0:#{@bind + 1}"
 
 run = (host, port, bind)->
 	log host, port, bind
@@ -62,4 +75,3 @@ module.exports.run = run
 
 if argv.length >= 5
 	run argv[2], (parseInt argv[3]), (parseInt argv[4])
-
