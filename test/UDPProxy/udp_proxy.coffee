@@ -26,6 +26,8 @@ class udp_proxy
 		@socket.on 'message', @redirect_packet
 		@client.on "message", (msg, rinfo) =>
 			@socket.send msg, 0, msg.length, @mport, @mhost
+			@client_len += msg.length
+			@client_count += 1
 
 		@client.resume()
 		@socket.resume()
@@ -41,7 +43,8 @@ class udp_proxy
 
 	redirect_packet: (msg, rinfo)=>
 		@client.send msg, 0, msg.length, @port, @host #if rinfo.port == @mport
-
+		@socket_len += msg.length
+		@socket_count += 1
 		#@socket.send msg, 0, msg.length, @mport, @mhost
 
 	run: ->
