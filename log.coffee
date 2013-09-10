@@ -1,6 +1,6 @@
 util = require 'util'
-ansi = require 'ansi'
-cursor = ansi process.stdout
+#ansi = require 'ansi'
+#cursor = ansi process.stdout
 
 #借助util, log 现在支持各种Object\String\Number了喵～
 log = (msg...) ->

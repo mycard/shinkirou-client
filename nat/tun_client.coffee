@@ -1,4 +1,4 @@
-# UDP穿越客户端
+# UDP穿越客户端连接
 udp = require 'dgram'
 EventEmitter = require('events').EventEmitter
 log = require '../log'
@@ -120,7 +120,7 @@ class tun_client extends EventEmitter
 
 		@socket.on 'error', (msg) =>
 			log "UDP错误", msg
-			this.emit 'error', msg
+			@emit 'error', msg
 
 		@socket.bind @LPort, @LHost, =>
 			log "服务启动成功：#{@LHost}:#{@LPort}"
@@ -131,7 +131,7 @@ class tun_client extends EventEmitter
 			@socket.send buffer, 0, buffer.length, @SPort, @SHost
 
 		@socket.on 'close', =>
-			this.emit 'close'
+			@emit 'close'
 
 		# 发起连接后10s内没有反馈则直接认为自己没能成功连接
 		@watch_timer = setTimeout =>
