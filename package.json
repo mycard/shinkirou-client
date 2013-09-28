@@ -1,13 +1,32 @@
 {
   "name": "shinkirou-client",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.0.9",
+  "private": false,
+  "main": "index.html",
   "scripts": {
-    "start": "coffee client.coffee"
+    "start": "nw .",
+    "build-coffee": "coffee -bcm -o ./js ./coffee"
   },
   "dependencies": {
     "coffee-script": "*",
-    "commander": "*",
-    "underscore": "*"
-  }
+    "commander": "*"
+  },
+  "window": {
+      "icon": "face_marisa.png",
+      "toolbar": false,
+      "width": 640,
+      "height": 480,
+      "position": "mouse",
+      "min_width": 640,
+      "min_height": 480,
+      "max_width": 1280,
+      "max_height": 720
+    },
+    "js-flags": "",
+    "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+    ]
 }
